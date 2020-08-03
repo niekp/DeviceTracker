@@ -43,6 +43,7 @@ namespace DeviceTracker
             // Tables
             services.AddTransient<IDeviceRepository, DeviceRepository>();
             services.AddTransient<IPingRepository, PingRepository>();
+            services.AddTransient<IBlockRepository, BlockRepository>();
 
             services.AddControllersWithViews();
         }

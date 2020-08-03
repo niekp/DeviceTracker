@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DeviceTracker.Data;
 using DeviceTracker.Models;
+using System.Collections.Generic;
 
 namespace DeviceTracker.Repositories
 {
@@ -14,6 +15,11 @@ namespace DeviceTracker.Repositories
         public DeviceRepository(DataContext db)
         {
             this.db = db;
+        }
+
+        public Task<List<Device>> GetAll()
+        {
+            return db.Device.ToListAsync();
         }
 
         public async Task<Device> GetOrCreate(string Device)

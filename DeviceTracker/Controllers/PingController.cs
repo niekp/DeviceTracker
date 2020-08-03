@@ -13,15 +13,36 @@ namespace DeviceTracker.Controllers
     {
         private readonly IPingRepository pingRepository;
         private readonly IDeviceRepository deviceRepository;
+        private readonly IBlockRepository blockRepository;
 
-        public PingController(IPingRepository pingRepository, IDeviceRepository deviceRepository)
+        public PingController(IPingRepository pingRepository,
+            IDeviceRepository deviceRepository,
+            IBlockRepository blockRepository
+        )
         {
             this.pingRepository = pingRepository;
             this.deviceRepository = deviceRepository;
+            this.blockRepository = blockRepository;
         }
 
+        public async Task Proccess()
+        {
+            foreach (var ping in await pingRepository.GetUnproccessed())
+            {
+                await blockRepository.ProccessPing(ping);
+            }
+        }
+
+        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Ping(string device, string info = "")
         {
+            if (string.IsNullOrEmpty(device))
+            {
+                ModelState.AddModelError("device", "Device not set");
+                return BadRequest();
+            }
+
             try
             {
                 if (!string.IsNullOrEmpty(info))
@@ -34,7 +55,8 @@ namespace DeviceTracker.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            await pingRepository.Ping(device);
+            var ping = await pingRepository.Ping(device);
+            await blockRepository.ProccessPing(ping);
 
             return Ok();
         }

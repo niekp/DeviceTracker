@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DeviceTracker.Data;
 using DeviceTracker.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeviceTracker.Repositories
 {
@@ -19,20 +22,39 @@ namespace DeviceTracker.Repositories
             this.deviceRepository = deviceRepository;
         }
 
-        public async Task Ping(string Device)
+        public Task<List<Ping>> GetUnproccessed()
         {
-            var device = await deviceRepository.GetOrCreate(Device);
-            await Ping(device.Id);
+            return db.Ping
+                .Where(p => p.BlockId == null)
+                .OrderBy(p => p.Time)
+                .ToListAsync();
         }
 
-        public async Task Ping(int DeviceId)
+        public Task<Ping> GetMostRecentPing(int DeviceId)
         {
-            db.Add(new Ping()
+            return db.Ping
+                .Where(b => b.DeviceId == DeviceId)
+                .OrderByDescending(b => b.Time)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Ping> Ping(string Device)
+        {
+            var device = await deviceRepository.GetOrCreate(Device);
+            return await Ping(device.Id);
+        }
+
+        public async Task<Ping> Ping(int DeviceId)
+        {
+            var ping = new Ping()
             {
                 DeviceId = DeviceId,
                 Time = DateTime.Now,
-            });
+            };
+
+            db.Add(ping);
             await db.SaveChangesAsync();
+            return ping;
         }
     }
 }

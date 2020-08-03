@@ -21,5 +21,9 @@ namespace DeviceTracker.Models
 
         public virtual ICollection<Ping> Pings { get; set; }
 
+        public TimeSpan GetTimespan()
+        {
+            return (To - From);
+        }
     }
 }
