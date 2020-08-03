@@ -12,5 +12,3 @@ echo "Free diskspace: " >> ~/extra.txt
     
 # Ping versturen naar de server
 curl -d "device=$(cat ~/apparaat.txt)&info=$(cat ~/extra.txt)" -X POST $DEVICE_TRACKER_URL/ping/ping
-
-wget $DEVICE_TRACKER_URL/ping.sh -O ~/ping.sh
