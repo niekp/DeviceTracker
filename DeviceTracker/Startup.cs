@@ -26,6 +26,24 @@ namespace DeviceTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+                options.KnownProxies.Add(IPAddress.Parse("51.68.123.74"));
+            });
+
+            // Databases
+            services.AddDbContext<DataContext>();
+
+            using (var db = new DataContext())
+            {
+                db.Database.EnsureCreated();
+            }
+
+            // Tables
+            services.AddTransient<IDeviceRepository, DeviceRepository>();
+            services.AddTransient<IPingRepository, PingRepository>();
+
             services.AddControllersWithViews();
         }
 
