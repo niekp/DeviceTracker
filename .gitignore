@@ -1,5 +1,6 @@
 device.db
 info.txt
+setup_pi.sh
 
 # globs
 Makefile.in
