@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using DeviceTracker.Models;
 using DeviceTracker.Data;
 using DeviceTracker.Repositories;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace DeviceTracker.Controllers
 {
@@ -16,16 +17,19 @@ namespace DeviceTracker.Controllers
         private readonly IDeviceRepository deviceRepository;
         private readonly IBlockRepository blockRepository;
         private readonly IPingRepository pingRepository;
+        private readonly IEmailSender emailSender;
 
         public HomeController(
             IDeviceRepository deviceRepository,
             IBlockRepository blockRepository,
-            IPingRepository pingRepository
+            IPingRepository pingRepository,
+            IEmailSender emailSender
         )
         {
             this.deviceRepository = deviceRepository;
             this.blockRepository = blockRepository;
             this.pingRepository = pingRepository;
+            this.emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()

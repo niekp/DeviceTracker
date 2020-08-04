@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using DeviceTracker.Data;
 using DeviceTracker.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using DeviceTracker.Services;
 
 namespace DeviceTracker
 {
@@ -36,7 +38,7 @@ namespace DeviceTracker
             // Databases
             services.AddDbContext<DataContext>();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<DataContext>();
 
             using (var db = new DataContext())
@@ -48,8 +50,12 @@ namespace DeviceTracker
             services.AddTransient<IDeviceRepository, DeviceRepository>();
             services.AddTransient<IPingRepository, PingRepository>();
             services.AddTransient<IBlockRepository, BlockRepository>();
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +85,7 @@ namespace DeviceTracker
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
