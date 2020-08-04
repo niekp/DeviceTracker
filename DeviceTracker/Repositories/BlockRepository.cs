@@ -9,6 +9,7 @@ namespace DeviceTracker.Repositories
 {
     public class BlockRepository : IBlockRepository
     {
+        private const int BLOCK_MINUTE_TRESHOLD = 30;
         private readonly DataContext db;
 
         public BlockRepository(DataContext db)
@@ -23,7 +24,12 @@ namespace DeviceTracker.Repositories
                     .OrderByDescending(b => b.To)
                     .FirstOrDefaultAsync();
 
-            if (block.To.AddMinutes(15) < DateTime.Now)
+            if (!(block is Block))
+            {
+                return null;
+            }
+
+            if (block.To.AddMinutes(BLOCK_MINUTE_TRESHOLD) < DateTime.Now)
             {
                 block = new Block()
                 {
@@ -38,7 +44,8 @@ namespace DeviceTracker.Repositories
         public async Task ProccessPing(Ping ping)
         {
             var block = db.Block.Where(b =>
-                b.To.AddMinutes(15) > ping.Time
+                b.DeviceId == ping.DeviceId
+                && b.To.AddMinutes(BLOCK_MINUTE_TRESHOLD) > ping.Time
             ).FirstOrDefault();
 
             if (!(block is Block))
