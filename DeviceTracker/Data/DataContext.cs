@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using DeviceTracker.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeviceTracker.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<IdentityUser>
     {
         public DataContext()
         {
@@ -15,6 +17,6 @@ namespace DeviceTracker.Data
         public DbSet<Ping> Ping { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=device.db");
+            => options.UseSqlite("Data Source=DeviceTracker.db");
     }
 }

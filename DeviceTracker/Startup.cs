@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DeviceTracker.Data;
 using DeviceTracker.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeviceTracker
 {
@@ -34,6 +35,9 @@ namespace DeviceTracker
 
             // Databases
             services.AddDbContext<DataContext>();
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DataContext>();
 
             using (var db = new DataContext())
             {
