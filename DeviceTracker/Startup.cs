@@ -14,6 +14,7 @@ using DeviceTracker.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using DeviceTracker.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace DeviceTracker
 {
@@ -40,17 +41,20 @@ namespace DeviceTracker
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<DataContext>();
-
+            /*
             using (var db = new DataContext())
             {
                 db.Database.EnsureCreated();
             }
+            */
 
             // Tables
             services.AddTransient<IDeviceRepository, DeviceRepository>();
             services.AddTransient<IPingRepository, PingRepository>();
             services.AddTransient<IBlockRepository, BlockRepository>();
+
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<AuthMessageSenderOptions>(Configuration);
 

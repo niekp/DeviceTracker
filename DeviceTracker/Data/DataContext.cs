@@ -14,6 +14,7 @@ namespace DeviceTracker.Data
 
         public DbSet<Block> Block { get; set; }
         public DbSet<Device> Device { get; set; }
+        public DbSet<DeviceUser> DeviceUser { get; set; }
         public DbSet<Ping> Ping { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

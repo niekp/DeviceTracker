@@ -1,0 +1,30 @@
+﻿@model DeviceAuthenticationViewModel
+<table>
+    <thead>
+        <tr>
+            <th>Apparaat</th>
+            <th>Toegang</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var device in Model.All)
+        {
+            <tr>
+                <td>@device.Identifier</td>
+                <td>
+                    @{
+                        var auth = Model.Authenticated.Where(d => d.Id == device.Id).FirstOrDefault();
+                    }
+                    @if (Model.Authenticated.Contains(device))
+                    {
+                        <span>Ja</span>
+                    }
+                    else
+                    {
+                        <a asp-action="RequestAccess" asp-route-id="@device.Id" class="btn btn-primary">Aanvragen</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

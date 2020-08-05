@@ -9,6 +9,7 @@ using DeviceTracker.Models;
 using DeviceTracker.Data;
 using DeviceTracker.Repositories;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Security.Claims;
 
 namespace DeviceTracker.Controllers
 {
@@ -39,7 +40,7 @@ namespace DeviceTracker.Controllers
                 Devices = new List<DevicePing>()
             };
 
-            foreach (var device in await deviceRepository.GetAll())
+            foreach (var device in await deviceRepository.GetAuthenticated(User))
             {
                 var block = await blockRepository.GetCurrentBlock(device.Id);
                 var ping = await pingRepository.GetMostRecentPing(device.Id);
