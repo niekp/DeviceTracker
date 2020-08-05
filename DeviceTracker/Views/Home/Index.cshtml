@@ -3,6 +3,11 @@
     ViewData["Title"] = "Home";
 }
 
+@if (!Model.Devices.Any())
+{
+    <span>Je hebt nog geen toegang tot apparaten. Vraag dit aan via <a asp-controller="Device">hier</a></span>
+}
+
 @foreach (var d in Model.Devices)
 {
     <div class="card mb-3">

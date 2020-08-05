@@ -41,6 +41,12 @@ namespace DeviceTracker.Controllers
             return View("AccesRequested");
         }
 
+        public async Task<IActionResult> GrantAccess(int Id)
+        {
+            await deviceRepository.GrantAccess(Id);
+            return View("AccesGranted");
+        }
+
 
     }
 }

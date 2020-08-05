@@ -35,6 +35,11 @@ namespace DeviceTracker.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
             var vm = new LastPingViewModel()
             {
                 Devices = new List<DevicePing>()

@@ -12,5 +12,6 @@ namespace DeviceTracker.Repositories
         Task<Device> GetOrCreate(string Device);
         Task SetInfo(string Device, string Info);
         Task RequestAccess(ClaimsPrincipal User, int DeviceId);
+        Task GrantAccess(int id);
     }
 }

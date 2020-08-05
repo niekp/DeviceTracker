@@ -58,6 +58,13 @@ namespace DeviceTracker.Repositories
             return d;
         }
 
+        public async Task GrantAccess(int id)
+        {
+            var request = await db.DeviceUser.Where(d => d.Id == id).FirstOrDefaultAsync();
+            request.Status = DeviceUserStatus.Accepted;
+            await db.SaveChangesAsync();
+        }
+
         public async Task RequestAccess(ClaimsPrincipal User, int DeviceId)
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
