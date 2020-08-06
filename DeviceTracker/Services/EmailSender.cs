@@ -25,7 +25,7 @@ namespace DeviceTracker.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("devices@niekvantoepassing.nl", Options.SendGridUser),
+                From = new EmailAddress(Options.SendGridFrom, Options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

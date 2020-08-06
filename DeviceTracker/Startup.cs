@@ -43,11 +43,6 @@ namespace DeviceTracker
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<DataContext>();
             
-            using (var db = new DataContext())
-            {
-                //db.Database.Migrate();
-            }
-            
 
             // Tables
             services.AddTransient<IDeviceRepository, DeviceRepository>();

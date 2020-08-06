@@ -16,6 +16,7 @@ namespace DeviceTracker.Data
         public DbSet<Device> Device { get; set; }
         public DbSet<DeviceUser> DeviceUser { get; set; }
         public DbSet<Ping> Ping { get; set; }
+        public DbSet<Rule> Rule { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=DeviceTracker.db");

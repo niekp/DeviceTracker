@@ -4,6 +4,7 @@
             <tr>
                 <th>Apparaat</th>
                 <th>Toegang</th>
+                <th>Regels</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,11 @@
                         else
                         {
                             <a asp-action="RequestAccess" asp-route-id="@device.Id" class="btn btn-primary">Aanvragen</a>
+                        }
+                    </td>
+                    <td>
+                        @if (Model.Authenticated.Contains(device)) {
+                            <a asp-action="Index" asp-controller="Rule" asp-route-deviceid="@device.Id" class="btn btn-primary">Instellen</a>
                         }
                     </td>
                 </tr>

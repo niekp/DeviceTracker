@@ -3,14 +3,16 @@ using System;
 using DeviceTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeviceTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200806162842_Rule")]
+    partial class Rule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,9 +115,6 @@ namespace DeviceTracker.Migrations
                     b.Property<int>("Active")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<TimeSpan>("NotifyAfter")
                         .HasColumnType("TEXT");
 
@@ -123,8 +122,6 @@ namespace DeviceTracker.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeviceId");
 
                     b.ToTable("Rule");
                 });
@@ -345,15 +342,6 @@ namespace DeviceTracker.Migrations
                         .WithMany("Pings")
                         .HasForeignKey("BlockId");
 
-                    b.HasOne("DeviceTracker.Models.Device", "Device")
-                        .WithMany()
-                        .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DeviceTracker.Models.Rule", b =>
-                {
                     b.HasOne("DeviceTracker.Models.Device", "Device")
                         .WithMany()
                         .HasForeignKey("DeviceId")
