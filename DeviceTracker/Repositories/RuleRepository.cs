@@ -17,6 +17,30 @@ namespace DeviceTracker.Repositories
             this.db = db;
         }
 
+        public async Task Create(ClaimsPrincipal User, Rule rule)
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            rule.User = id;
+            db.Add(rule);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task Delete(ClaimsPrincipal User, int id)
+        {
+            var rule = await GetById(User, id);
+            if (rule is Rule)
+            {
+                db.Remove(rule);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public Task<Rule> GetById(ClaimsPrincipal User, int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return db.Rule.Where(r => r.User == userId && r.Id == id).FirstOrDefaultAsync();
+        }
+
         public Task<List<Rule>> GetRules(ClaimsPrincipal User, int DeviceId)
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);

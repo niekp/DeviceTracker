@@ -25,6 +25,7 @@
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="Views\Device\" />
+    <Folder Include="Views\Rule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml" />

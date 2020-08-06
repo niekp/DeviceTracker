@@ -1,0 +1,36 @@
+﻿@model List<Rule>
+
+<a class="btn btn-primary" asp-action="Create" asp-route-deviceid="@ViewBag.DeviceId">Nieuwe regel</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Actief</th>
+            <th>Tijd</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rule in Model)
+        {
+            <tr>
+                <td>
+                    @if (rule.Active == ActiveState.Active)
+                    {
+                        <span>Actief</span>
+                    }
+                    else
+                    {
+                        <span>Niet actief</span>
+                    }
+                </td>
+                <td>
+                    @rule.NotifyAfter
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@rule.Id" class="btn btn-primary">Verwijderen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

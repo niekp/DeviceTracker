@@ -48,6 +48,7 @@ namespace DeviceTracker
             services.AddTransient<IDeviceRepository, DeviceRepository>();
             services.AddTransient<IPingRepository, PingRepository>();
             services.AddTransient<IBlockRepository, BlockRepository>();
+            services.AddTransient<IRuleRepository, RuleRepository>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
