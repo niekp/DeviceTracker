@@ -43,9 +43,15 @@ namespace DeviceTracker.Controllers
             return View("AccesRequested");
         }
 
-        public async Task<IActionResult> GrantAccess(int Id)
+        public async Task<IActionResult> GrantAccess(int Id, string Token)
         {
-            await deviceRepository.GrantAccess(Id);
+            try
+            {
+                await deviceRepository.GrantAccess(Id, Token);
+            } catch (ArgumentException)
+            {
+                ViewBag.Error = "Ongeldige token";
+            }
             return View("AccesGranted");
         }
 

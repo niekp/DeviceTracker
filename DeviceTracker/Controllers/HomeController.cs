@@ -20,19 +20,16 @@ namespace DeviceTracker.Controllers
         private readonly IDeviceRepository deviceRepository;
         private readonly IBlockRepository blockRepository;
         private readonly IPingRepository pingRepository;
-        private readonly IEmailSender emailSender;
 
         public HomeController(
             IDeviceRepository deviceRepository,
             IBlockRepository blockRepository,
-            IPingRepository pingRepository,
-            IEmailSender emailSender
+            IPingRepository pingRepository
         )
         {
             this.deviceRepository = deviceRepository;
             this.blockRepository = blockRepository;
             this.pingRepository = pingRepository;
-            this.emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()

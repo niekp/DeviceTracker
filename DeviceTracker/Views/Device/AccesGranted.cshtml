@@ -1,1 +1,7 @@
-﻿De toegang is verleend.
+﻿@if (!(string.IsNullOrEmpty(ViewBag.Error)))
+{
+    <div>ViewBag.Error</div>
+} else
+{
+    <div>De toegang is verleend.</div>
+}

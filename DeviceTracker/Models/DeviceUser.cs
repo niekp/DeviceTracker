@@ -15,6 +15,8 @@ namespace DeviceTracker.Models
         public virtual Device Device { get; set; }
 
         public DeviceUserStatus Status { get; set; }
+
+        public string Token { get; set; }
     }
 
     public enum DeviceUserStatus

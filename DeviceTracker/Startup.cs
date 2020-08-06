@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using DeviceTracker.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeviceTracker
 {
@@ -44,7 +45,7 @@ namespace DeviceTracker
             
             using (var db = new DataContext())
             {
-                db.Database.EnsureCreated();
+                db.Database.Migrate();
             }
             
 

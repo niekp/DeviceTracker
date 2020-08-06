@@ -58,9 +58,14 @@ namespace DeviceTracker.Repositories
             return d;
         }
 
-        public async Task GrantAccess(int id)
+        public async Task GrantAccess(int id, string Token)
         {
-            var request = await db.DeviceUser.Where(d => d.Id == id).FirstOrDefaultAsync();
+            var request = await db.DeviceUser.Where(d => d.Id == id && d.Token == Token).FirstOrDefaultAsync();
+            if (!(request is DeviceUser))
+            {
+                throw new ArgumentException("Invalid request");
+            }
+
             request.Status = DeviceUserStatus.Accepted;
             await db.SaveChangesAsync();
         }
@@ -82,18 +87,22 @@ namespace DeviceTracker.Repositories
                 {
                     DeviceId = DeviceId,
                     User = id,
-                    Status = DeviceUserStatus.Requested
+                    Status = DeviceUserStatus.Requested,
+                    Token = Guid.NewGuid().ToString()
                 };
                 db.Add(request);
                 await db.SaveChangesAsync();
             }
 
-            // Yeh yeh, this needs a token but its currently only for a little home use.
-            var url = string.Concat(httpContextAccessor.HttpContext.Request.Host, "/Device/GrantAccess/?Id=", request.Id);
+            var url = string.Format("{0}://{1}/Device/GrantAccess/?Id={2}&Token={3}",
+                httpContextAccessor.HttpContext.Request.Scheme,
+                httpContextAccessor.HttpContext.Request.Host,
+                request.Id,
+                request.Token);
 
             await emailSender.SendEmailAsync("device-admin@niekvantoepassing.nl",
                 "Toegang tot apparaat",
-                $"De gebruiker {name} wil toegang tot {device.Identifier}. <a href='https://{url}'>Geef toegang</a>");
+                $"De gebruiker {name} wil toegang tot {device.Identifier}. <a href='{url}'>Geef toegang</a>");
         }
 
         public async Task SetInfo(string Device, string Info)
