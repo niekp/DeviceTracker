@@ -45,7 +45,7 @@ namespace DeviceTracker
             
             using (var db = new DataContext())
             {
-                db.Database.Migrate();
+                //db.Database.Migrate();
             }
             
 
