@@ -188,6 +188,50 @@ namespace DeviceTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeviceUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    User = table.Column<string>(nullable: true),
+                    DeviceId = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Token = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeviceUser_Device_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Device",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rule",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    User = table.Column<string>(nullable: true),
+                    DeviceId = table.Column<int>(nullable: false),
+                    Active = table.Column<int>(nullable: false),
+                    NotifyAfter = table.Column<TimeSpan>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rule", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rule_Device_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Device",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ping",
                 columns: table => new
                 {
@@ -257,6 +301,11 @@ namespace DeviceTracker.Migrations
                 column: "DeviceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeviceUser_DeviceId",
+                table: "DeviceUser",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ping_BlockId",
                 table: "Ping",
                 column: "BlockId");
@@ -264,6 +313,11 @@ namespace DeviceTracker.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Ping_DeviceId",
                 table: "Ping",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rule_DeviceId",
+                table: "Rule",
                 column: "DeviceId");
         }
 
@@ -285,7 +339,13 @@ namespace DeviceTracker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DeviceUser");
+
+            migrationBuilder.DropTable(
                 name: "Ping");
+
+            migrationBuilder.DropTable(
+                name: "Rule");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

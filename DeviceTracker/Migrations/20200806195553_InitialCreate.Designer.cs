@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeviceTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200806164127_RuleDevice")]
-    partial class RuleDevice
+    [Migration("20200806195553_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
