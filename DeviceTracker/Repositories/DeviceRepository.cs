@@ -70,7 +70,7 @@ namespace DeviceTracker.Repositories
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var name = User.FindFirstValue(ClaimTypes.Name);
             var device = await db.Device.Where(d => d.Id == DeviceId).FirstOrDefaultAsync();
-            if (!(device is Device))
+            if (!(device is Device) || string.IsNullOrEmpty(id))
             {
                 return;
             }

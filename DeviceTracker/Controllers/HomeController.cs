@@ -10,9 +10,11 @@ using DeviceTracker.Data;
 using DeviceTracker.Repositories;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeviceTracker.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IDeviceRepository deviceRepository;
@@ -35,11 +37,6 @@ namespace DeviceTracker.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Redirect("/Identity/Account/Login");
-            }
-
             var vm = new LastPingViewModel()
             {
                 Devices = new List<DevicePing>()

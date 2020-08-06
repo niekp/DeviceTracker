@@ -10,9 +10,11 @@ using DeviceTracker.Data;
 using DeviceTracker.Repositories;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeviceTracker.Controllers
 {
+    [Authorize]
     public class DeviceController : Controller
     {
         private readonly IDeviceRepository deviceRepository;
