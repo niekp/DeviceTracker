@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -58,5 +59,16 @@ namespace DeviceTracker.Repositories
             ).ToListAsync();
         }
 
+        public async Task StartCooldown(int Id)
+        {
+            var rule = await db.Rule.Where(r =>
+                r.Id == Id
+            ).FirstOrDefaultAsync();
+            if (rule is Rule)
+            {
+                rule.StartCooldown = DateTime.Now;
+                await db.SaveChangesAsync();
+            }
+        }
     }
 }

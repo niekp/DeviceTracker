@@ -15,7 +15,6 @@ namespace DeviceTracker.Repositories
         Task SetInfo(string Device, string Info);
         Task RequestAccess(ClaimsPrincipal User, int DeviceId);
         Task GrantAccess(int id, string Token);
-        Task StartCooldown(IdentityUser user, int deviceId);
         Task<DeviceUser> GetDeviceUser(int deviceId, string User);
     }
 }

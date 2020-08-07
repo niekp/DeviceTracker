@@ -40,6 +40,7 @@ namespace DeviceTracker.Controllers
         private bool RuleValid(Rule rule, Block block)
         {
             return block.GetTimespan() >= rule.NotifyAfter
+                && rule.StartCooldown.Add(rule.NotifyAfter) < DateTime.Now
                 && (
                     rule.Active == ActiveState.Active && block.IsActive()
                     || rule.Active == ActiveState.Inactive && !block.IsActive()
@@ -69,13 +70,11 @@ namespace DeviceTracker.Controllers
                         var user = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
                         if (user is IdentityUser)
                         {
-                            // Check cooldown
+                            // Check authentication
                             var authenticatedDevice = await deviceRepository.GetDeviceUser(device.Id, id);
 
                             if (!(authenticatedDevice is DeviceUser)
-                                || authenticatedDevice.Status != DeviceUserStatus.Accepted
-                                || authenticatedDevice.StartCooldown.AddHours(5) > DateTime.Now
-                                )
+                                || authenticatedDevice.Status != DeviceUserStatus.Accepted)
                             {
                                 continue;
                             }
@@ -91,7 +90,13 @@ namespace DeviceTracker.Controllers
                                 $"<tr><td>Duur</td><td>{timeSpan}</td></tr>" +
                                 $"</table>");
 
-                            await deviceRepository.StartCooldown(user, device.Id);
+                            var validRules = rules.Where(r => r.User == id
+                                            && RuleValid(r, block)
+                            );
+                            foreach (var rule in validRules)
+                            {
+                                await ruleRepository.StartCooldown(rule.Id);
+                            }
                         }
                     }
                 }

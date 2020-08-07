@@ -17,8 +17,6 @@ namespace DeviceTracker.Models
         public DeviceUserStatus Status { get; set; }
 
         public string Token { get; set; }
-
-        public DateTime StartCooldown { get; set; }
     }
 
     public enum DeviceUserStatus

@@ -122,19 +122,5 @@ namespace DeviceTracker.Repositories
             device.Info = Info;
             await db.SaveChangesAsync();
         }
-
-
-        public async Task StartCooldown(IdentityUser user, int deviceId)
-        {
-            var deviceUser = await db.DeviceUser.Where(r =>
-                r.DeviceId == deviceId
-                && r.User == user.Id
-            ).FirstOrDefaultAsync();
-            if (deviceUser is DeviceUser)
-            {
-                deviceUser.StartCooldown = DateTime.Now;
-                await db.SaveChangesAsync();
-            }
-        }
     }
 }

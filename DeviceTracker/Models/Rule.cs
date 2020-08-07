@@ -14,6 +14,7 @@ namespace DeviceTracker.Models
         [ForeignKey(nameof(DeviceId))]
         public virtual Device Device { get; set; }
 
+        public DateTime StartCooldown { get; set; }
     }
 
     public enum ActiveState
