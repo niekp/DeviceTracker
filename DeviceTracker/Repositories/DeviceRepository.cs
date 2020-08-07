@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeviceTracker.Repositories
 {
@@ -32,12 +33,22 @@ namespace DeviceTracker.Repositories
         public Task<List<Device>> GetAuthenticated(ClaimsPrincipal User)
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return GetAuthenticated(id);
+        }
+
+        public Task<List<Device>> GetAuthenticated(string User)
+        {
             return (
                 from d in db.Device
                 join du in db.DeviceUser on d.Id equals du.DeviceId
-                where du.User == id && du.Status == DeviceUserStatus.Accepted
+                where du.User == User && du.Status == DeviceUserStatus.Accepted
                 select d
             ).ToListAsync();
+        }
+
+        public Task<DeviceUser> GetDeviceUser(int deviceId, string User)
+        {
+            return db.DeviceUser.Where(d => d.DeviceId == deviceId && d.User == User).FirstOrDefaultAsync();
         }
 
         public async Task<Device> GetOrCreate(string Device)
@@ -110,6 +121,20 @@ namespace DeviceTracker.Repositories
             var device = await GetOrCreate(Device);
             device.Info = Info;
             await db.SaveChangesAsync();
+        }
+
+
+        public async Task StartCooldown(IdentityUser user, int deviceId)
+        {
+            var deviceUser = await db.DeviceUser.Where(r =>
+                r.DeviceId == deviceId
+                && r.User == user.Id
+            ).FirstOrDefaultAsync();
+            if (deviceUser is DeviceUser)
+            {
+                deviceUser.StartCooldown = DateTime.Now;
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

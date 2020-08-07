@@ -12,25 +12,18 @@
             {
                 <tr>
                     <td>@device.Identifier</td>
-                    <td>
-                        @{
-                            var auth = Model.Authenticated.Where(d => d.Id == device.Id).FirstOrDefault();
-                        }
-                        @if (Model.Authenticated.Contains(device))
-                        {
-                            <span>Ja</span>
-                        }
-                        else
-                        {
-                            <a asp-action="RequestAccess" asp-route-id="@device.Id" class="btn btn-primary">Aanvragen</a>
-                        }
-                    </td>
-                    <td>
-                        @if (Model.Authenticated.Contains(device)) {
+                    @if (Model.Authenticated.Contains(device))
+                    {
+                        <td>Ja</td>
+                        <td>
                             <a asp-action="Index" asp-controller="Rule" asp-route-deviceid="@device.Id" class="btn btn-primary">Instellen</a>
-                        }
-                    </td>
+                        </td>
+                    } else
+                    {
+                        <td><a asp-action="RequestAccess" asp-route-id="@device.Id" class="btn btn-primary">Aanvragen</a></td>
+                        <td></td>
+                    }
                 </tr>
-            }
+        }
         </tbody>
     </table>

@@ -25,5 +25,10 @@ namespace DeviceTracker.Models
         {
             return (To - From);
         }
+
+        public bool IsActive()
+        {
+            return Id > 0;
+        }
     }
 }

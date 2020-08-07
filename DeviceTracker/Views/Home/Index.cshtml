@@ -13,9 +13,9 @@
     <div class="card mb-3">
         <h5 class="card-header">@d.Device.Identifier</h5>
         <div class="card-body">
-            <h5>@(d.Block?.Id > 0 ? "Actief" : "Niet actief")</h5>
+            <h5>@(d.Block?.IsActive() == true ? "Actief" : "Niet actief")</h5>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Laatste ping</label>
+                <label class="col-sm-2 col-form-label">Laatste bericht</label>
                 <div class="col-sm-10">
                     <input type="text" readonly class="form-control-plaintext" value="@d.LastPing?.Time.ToString("dd-MM HH:mm:ss")">
                 </div>

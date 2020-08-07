@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DeviceTracker.Data;
 using DeviceTracker.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeviceTracker.Repositories
@@ -49,5 +50,13 @@ namespace DeviceTracker.Repositories
                 && r.DeviceId == DeviceId
             ).ToListAsync();
         }
+
+        public Task<List<Rule>> GetRules(int DeviceId)
+        {
+            return db.Rule.Where(r =>
+                r.DeviceId == DeviceId
+            ).ToListAsync();
+        }
+
     }
 }
